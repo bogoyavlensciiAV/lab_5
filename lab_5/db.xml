@@ -1,48 +1,28 @@
 <map>
   <entry>
-    <int>1</int>
+    <int>2</int>
     <models.Dragon>
-      <id>0</id>
-      <name>11111</name>
+      <id>3</id>
+      <name>Петя</name>
       <coordinates>
-        <x>111</x>
-        <y>111</y>
+        <x>1</x>
+        <y>1</y>
       </coordinates>
-      <creationDate>2024-08-16T13:45:34.0454125+03:00[Europe/Moscow]</creationDate>
+      <creationDate>2024-08-20T15:04:11.4811923+03:00[Europe/Moscow]</creationDate>
       <age>1</age>
-      <weight>11.0</weight>
+      <weight>1.0</weight>
       <type>UNDERGROUND</type>
       <character>EVIL</character>
       <cave>
         <depth>1.0</depth>
-        <numberOfTreasures>11.0</numberOfTreasures>
-      </cave>
-    </models.Dragon>
-  </entry>
-  <entry>
-    <int>2</int>
-    <models.Dragon>
-      <id>1</id>
-      <name>22</name>
-      <coordinates>
-        <x>222</x>
-        <y>222</y>
-      </coordinates>
-      <creationDate>2024-08-16T13:45:47.581874+03:00[Europe/Moscow]</creationDate>
-      <age>22</age>
-      <weight>2.0</weight>
-      <type>AIR</type>
-      <character>GOOD</character>
-      <cave>
-        <depth>2.0</depth>
-        <numberOfTreasures>2.0</numberOfTreasures>
+        <numberOfTreasures>1.0</numberOfTreasures>
       </cave>
     </models.Dragon>
   </entry>
   <entry>
     <int>3</int>
     <models.Dragon>
-      <id>1</id>
+      <id>2</id>
       <name>Миша</name>
       <coordinates>
         <x>1</x>

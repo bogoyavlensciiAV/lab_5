@@ -13,7 +13,6 @@ public class Save extends Command{
         if (!argument.isEmpty()) {
             throw new InappropriateArgumentException("аргумент должен отсутствовать");
         }
-        FileManager fileManager = new FileManager();
-        fileManager.writeFile();
+        FileManager.writeFile();
     }
 }

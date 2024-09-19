@@ -15,8 +15,6 @@ public class History extends Command{
         if (!argument.isEmpty()) {
             throw new InappropriateArgumentException("аргумент должен отсутствовать");
         }
-        for (int i = 0; i<6; i++){
-            ConsoleApp.commandPrint(Command.commandHistory[i]);
-        }
+        Command.commandHistory.forEach(System.out::println);
     }
 }

@@ -25,9 +25,9 @@ public class MinByCoordinates extends Command{
         if (collection.isEmpty()){
             throw new NullCollectionException("Коллекция пустая");
         }
-        List<Dragon> DragonByCoordinates = new ArrayList<>(collection.values());
-        Collections.sort(DragonByCoordinates, new MinCoordinatesComparator());
-        ConsoleApp.commandPrint(String.valueOf(DragonByCoordinates.getFirst()));
+        List<Dragon> DragonByCoordinates = new ArrayList<>(collection.values());//запихнуть в менеджер
+        Collections.sort(DragonByCoordinates, new MinCoordinatesComparator());//запихнуть в менеджер
+        ConsoleApp.commandPrint(String.valueOf(DragonByCoordinates.get(0)));//запихнуть в менеджер
     }
 }
 

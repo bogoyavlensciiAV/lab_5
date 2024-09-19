@@ -17,14 +17,21 @@ import java.util.Scanner;
 import static java.time.ZoneOffset.UTC;
 
 public class FileManager {
-    private String filepath = "db.xml";
-    private final XStream xstream = new XStream();
+    private static String filepath = "db.xml";
+    private static final XStream xstream = new XStream();
 
     public void setFilename(String filepath) {
-        this.filepath = filepath;
+        FileManager.filepath = filepath;
     }
-
-    public void writeFile(){
+    public static Scanner readScript(String path){
+        try {
+            Scanner script = new Scanner(new File(path));
+            return script;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void writeFile(){
         HashMap<Integer, Dragon> collection = CollectionManager.getCollection();
         String dataXml = xstream.toXML(collection);
         BufferedOutputStream bos;
@@ -38,7 +45,7 @@ public class FileManager {
             throw new RuntimeException(ex);
         }
     }
-    public void readFile(){
+    public static void readFile() throws FileNotFoundException {
         if(!filepath.isEmpty()){
             try {
                 xstream.addPermission(AnyTypePermission.ANY);
@@ -52,6 +59,8 @@ public class FileManager {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
+        } else {
+            throw new FileNotFoundException("Путь к файлу отсутствует");
         }
     }
 }

@@ -3,9 +3,12 @@ package console;
 import commands.Command;
 import exceptions.InappropriateArgumentException;
 import exceptions.NullCollectionException;
+import exceptions.RecurtionScriptException;
+import managers.FileManager;
 import models.*;
 import utilities.FormatCheck;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
@@ -14,17 +17,32 @@ import static commands.Command.commandMap;
 
 public class ConsoleApp {
     public static Scanner reader = new Scanner(System.in);
-    public static void commandPrint(String string) {
-        System.out.println(string);
+    public static Scanner script;
+    public static boolean consoleMode;
+    public static int depthRecursion = 0;
+    public static void commandAsk(String string) {
+        if (!consoleMode){
+            System.out.println(string);
+        }
     }
+    public static void commandPrint(String string) {System.out.println(string);}
+    public static Scanner getScanner(){
+        if (consoleMode){
+            return script;
+        } else {
+            return reader;
+        }
+    }
+
     public static Dragon createDragon(){
         Dragon drag = new Dragon();
+        Scanner scanner = getScanner();
         int x;
         float depth;
-        System.out.println("Создание дракона (для завершения введите exit)");
+        commandAsk("Создание дракона (для завершения введите exit)");
         while (true) {
-            System.out.print("Введите имя дракона: ");
-            String input  = reader.nextLine();
+            commandAsk("Введите имя дракона: ");
+            String input  = scanner.nextLine();
             if (input.equals("exit")){
                 return drag;
             }
@@ -36,8 +54,8 @@ public class ConsoleApp {
             break;
         }
         while (true) {
-            System.out.print("Введите координатy x: ");
-            String input  = reader.nextLine().trim();
+            commandAsk("Введите координатy x: ");
+            String input  = scanner.nextLine().trim();
             if (input.equals("exit")){
                 return drag;
             }
@@ -57,8 +75,8 @@ public class ConsoleApp {
             break;
         }
         while (true) {
-            System.out.print("Введите координатy y: ");
-            String input  = reader.nextLine().trim();
+            commandAsk("Введите координатy y: ");
+            String input  = scanner.nextLine().trim();
             if (input.equals("exit")){
                 return drag;
             }
@@ -75,8 +93,8 @@ public class ConsoleApp {
             break;
         }
         while (true) {
-            System.out.print("Введите возраст дракона: ");
-            String input  = reader.nextLine().trim();
+            commandAsk("Введите возраст дракона: ");
+            String input  = scanner.nextLine().trim();
             if (input.equals("exit")){
                 return drag;
             }
@@ -97,8 +115,8 @@ public class ConsoleApp {
             break;
         }
         while (true) {
-            System.out.print("Введите вec дракона: ");
-            String input  = reader.nextLine().trim();
+            commandAsk("Введите вec дракона: ");
+            String input  = scanner.nextLine().trim();
             if (input.equals("exit")){
                 return drag;
             }
@@ -114,8 +132,8 @@ public class ConsoleApp {
             break;
         }
         while (true) {
-            System.out.print("Введите тип дракона(число): \n"+ Arrays.toString(DragonType.values())+"\n");
-            String input  = reader.nextLine().trim();
+            commandAsk("Введите тип дракона(число): \n"+ Arrays.toString(DragonType.values())+"\n");
+            String input  = scanner.nextLine().trim();
             if (input.equals("exit")){
                 return drag;
             }
@@ -134,8 +152,8 @@ public class ConsoleApp {
             break;
         }
         while (true) {
-            System.out.print("Введите характер дракона(число): \n"+ Arrays.toString(DragonCharacter.values())+"\n");
-            String input  = reader.nextLine().trim();
+            commandAsk("Введите характер дракона(число): \n"+ Arrays.toString(DragonCharacter.values())+"\n");
+            String input  = scanner.nextLine().trim();
             if (input.equals("exit")){
                 return drag;
             }
@@ -154,8 +172,8 @@ public class ConsoleApp {
             break;
         }
         while (true) {
-            System.out.print("Введите глубину пещеры дракона: ");
-            String input  = reader.nextLine().trim();
+            commandAsk("Введите глубину пещеры дракона: ");
+            String input  = scanner.nextLine().trim();
             if (input.equals("exit")){
                 return drag;
             }
@@ -171,8 +189,8 @@ public class ConsoleApp {
             break;
         }
         while (true) {
-            System.out.print("Введите кол-во сокровищ в пещере: ");
-            String input  = reader.nextLine().trim();
+            commandAsk("Введите кол-во сокровищ в пещере: ");
+            String input  = scanner.nextLine().trim();
             if (input.equals("exit")){
                 return drag;
             }
@@ -191,7 +209,6 @@ public class ConsoleApp {
         return drag;
     }
     public static void interactiveMod() {
-        String[] commandHistory = new String[6];
         System.out.println("Введите help для получения инструкции");
         while (true) {
             try {
@@ -200,17 +217,15 @@ public class ConsoleApp {
                 if (Objects.isNull(input)){
                     System.exit(0);
                 }
-                String[] str = input.replaceAll(" +", " ").split(" "); //если вдруг понадобиться чтобы работало и при пробелах в начале, то trim()
+                String[] str = input.trim().replaceAll(" +", " ").split(" "); //если вдруг понадобиться чтобы работало и при пробелах в начале, то trim()
                 try {
                     String argument = str.length > 1 ? str[1] : "";
                     commandMap.get(str[0]).execute(argument);
-                    commandHistory[0] = str[0];
-                    for (int i = 0; i < 5; i++){
-                        commandHistory[i+1] = Command.commandHistory[i];
+                    consoleMode = false;
+                    if (Command.commandHistory.size() == 6) {
+                        Command.commandHistory.remove();
                     }
-                    for (int i = 0; i < 6; i++){
-                        Command.commandHistory[i] = commandHistory[i];
-                    }
+                    Command.commandHistory.add(str[0]);
                     System.out.println("Команда успешно выполнена");
                 } catch (InappropriateArgumentException exc) {
                     System.out.println("Неверный аргумент: "+ exc.getMessage());
@@ -220,7 +235,46 @@ public class ConsoleApp {
                     System.out.println(exc.getMessage());
                 }
             } catch (Exception exc) {
-                System.out.println(exc.toString());
+                System.out.println("Непредвиденная ошибка: "+ exc.getMessage());
+            }
+        }
+    }
+    public static void scriptMod(String path){
+        consoleMode = true;
+        script = FileManager.readScript(path);
+        
+        while (script.hasNext()) {
+            try {
+                String input  = script.nextLine();
+                if (Objects.isNull(input)){
+                    System.exit(0);
+                }
+                String[] str = input.trim().replaceAll(" +", " ").split(" "); //если вдруг понадобиться чтобы работало и при пробелах в начале, то trim()
+                try {
+                    String argument = str.length > 1 ? str[1] : "";
+                    if (str[0].equals("execute_script")){
+                        depthRecursion+=1;
+                    }
+                    if (depthRecursion >= 3){
+                        throw new RecurtionScriptException("Превышена глубина рекурсии!");
+                    }
+                    commandMap.get(str[0]).execute(argument);
+                    if (Command.commandHistory.size() == 6) {
+                        Command.commandHistory.remove();
+                    }
+                    Command.commandHistory.add(str[0]);
+                    System.out.println("Команда успешно выполнена");
+                } catch (InappropriateArgumentException exc) {
+                    System.out.println("Неверный аргумент: "+ exc.getMessage());
+                } catch (NullPointerException exc) {
+                    System.out.println("Такой команды нет");
+                } catch (NullCollectionException exc){
+                    System.out.println(exc.getMessage());
+                } catch (RecurtionScriptException exc){
+                    System.out.println(exc.getMessage());
+                }
+            } catch (Exception exc) {
+                exc.printStackTrace();
                 System.out.println("Непредвиденная ошибка");
             }
         }

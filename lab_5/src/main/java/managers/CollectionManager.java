@@ -46,11 +46,21 @@ public class CollectionManager {
     //    public static void replaceByKey(Integer i) {
 //        collection.remove(i);
 //    }
-    public static Dragon getDragon(Integer id) {
+    public static Dragon getDragon(Integer key) {
         inicializationDate = LocalDate.now();
-        return collection.get(id);
+        return collection.get(key);
     }
-
+    public static Integer getMaxId(){
+        return Collections.max(collection.entrySet(), (entry1, entry2) -> entry1.getValue().getId() - entry2.getValue().getId()).getValue().getId();
+    }
+    public static void removeGreater(Integer key){
+        HashMap<Integer, Dragon> collection =CollectionManager.getSortedCollection();
+        List<Integer> keyList = new ArrayList<>(collection.keySet());
+        for(int idKey = keyList.indexOf(key)+1; idKey < keyList.size(); idKey++) {
+            collection.remove(keyList.get(idKey));
+        }
+        CollectionManager.setCollection(collection);
+    }
     public static HashMap<Integer, Dragon> getSortedCollection() {
         HashMap<Integer, Dragon> collection = getCollection();
         // Create a list from elements of HashMap

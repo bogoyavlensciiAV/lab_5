@@ -1,6 +1,7 @@
 package commands;
 
-import java.util.HashMap;
+import java.util.*;
+
 import exceptions.InappropriateArgumentException;
 import exceptions.NullCollectionException;
 
@@ -9,7 +10,7 @@ public abstract class Command {
     protected String description;
 
     public static HashMap<String, Command> commandMap = new HashMap<>(); //мапа для всех команд (имя, объект Command)
-    public static String[] commandHistory = new String[6];
+    public static ArrayDeque<String> commandHistory = new ArrayDeque<>();
     static {
         commandMap.put("help",  new Help());
         commandMap.put("show",  new Show());
@@ -25,6 +26,8 @@ public abstract class Command {
         commandMap.put("history", new History());
         commandMap.put("print_ascending", new PrintAscending());
         commandMap.put("remove_greater", new RemoveGreater());
+        commandMap.put("replace_if_greater", new ReplaceIfGreater());
+        commandMap.put("execute_script", new ExecuteScript());
     }
 
     public abstract void execute(String argument) throws InappropriateArgumentException, NullCollectionException;

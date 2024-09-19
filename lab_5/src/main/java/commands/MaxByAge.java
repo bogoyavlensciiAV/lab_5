@@ -25,9 +25,9 @@ public class MaxByAge extends Command{
         if (collection.isEmpty()){
             throw new NullCollectionException("Коллекция пустая");
         }
-        List<Dragon> DragonByAge = new ArrayList<>(collection.values());
-        Collections.sort(DragonByAge, new MaxAgeComparator());
-        ConsoleApp.commandPrint(String.valueOf(DragonByAge.getFirst()));
+        List<Dragon> DragonByAge = new ArrayList<>(collection.values());//запихнуть в менеджер
+        Collections.sort(DragonByAge, new MaxAgeComparator()); //запихнуть в менеджер
+        ConsoleApp.commandPrint(String.valueOf(DragonByAge.get(0)));//запихнуть в менеджер
     }
 }
 
